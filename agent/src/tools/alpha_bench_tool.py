@@ -257,12 +257,9 @@ def _load_csi300_panel(start: str, end: str) -> dict[str, pd.DataFrame]:
             "TUSHARE_TOKEN not in agent/.env or environment; required for csi300 universe"
         )
 
-    try:
-        import tushare as ts
-    except ImportError as exc:
-        raise RuntimeError(f"tushare not installed: {exc}") from exc
+    from src.tushare_client import get_pro
 
-    pro = ts.pro_api(token)
+    pro = get_pro()
     sd = start.replace("-", "")
     ed = end.replace("-", "")
 

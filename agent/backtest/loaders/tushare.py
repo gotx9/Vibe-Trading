@@ -25,15 +25,16 @@ class DataLoader:
     requires_auth = True
 
     def is_available(self) -> bool:
-        """Available when TUSHARE_TOKEN is set."""
-        return os.getenv("TUSHARE_TOKEN", "").strip() not in TUSHARE_TOKEN_PLACEHOLDERS
+        """Available when TUSHARE_TOKEN / TUSHARE_PROXY_URL are both set."""
+        token = os.getenv("TUSHARE_TOKEN", "").strip()
+        proxy = os.getenv("TUSHARE_PROXY_URL", "").strip()
+        return token not in TUSHARE_TOKEN_PLACEHOLDERS and bool(proxy)
 
     def __init__(self) -> None:
-        """Initialize Tushare pro API."""
-        import tushare as ts
+        """Initialize Tushare pro API via shared client module."""
+        from src.tushare_client import get_pro
 
-        token = os.getenv("TUSHARE_TOKEN", "")
-        self.api = ts.pro_api(token)
+        self.api = get_pro()
 
     def fetch(
         self,

@@ -113,12 +113,9 @@ class TushareFundamentalProvider:
 
     def __init__(self, api: Any | None = None) -> None:
         if api is None:
-            import tushare as ts
+            from src.tushare_client import get_pro
 
-            token = os.getenv("TUSHARE_TOKEN", "").strip()
-            if token in TUSHARE_TOKEN_PLACEHOLDERS:
-                token = ""
-            api = ts.pro_api(token)
+            api = get_pro()
         self.api = api
 
     def list_tables(self) -> list[str]:
